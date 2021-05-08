@@ -51,13 +51,13 @@ int main(int argc, char **argv) {
     pipe(fd2);
 
     if (pipe(fd) == -1) { 
-		fprintf(stderr, "Pipe Failed" ); 
-		return 1; 
-	} 
-	if (pipe(fd2) == -1) { 
-		fprintf(stderr, "Pipe Failed" ); 
-		return 1; 
-	} 
+	fprintf(stderr, "Pipe Failed" ); 
+	return 1; 
+    } 
+    if (pipe(fd2) == -1) { 
+	fprintf(stderr, "Pipe Failed" ); 
+	return 1; 
+    } 
     pid = fork(); //fork child pertama
     if (pid < 0) { 
 		fprintf(stderr, "fork Failed" ); 
