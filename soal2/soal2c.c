@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
             fprintf(stderr, "fork Failed");
             return 1;
         } else if (pid_2 == 0) {
-            head(fd, fd2);
+            head();
         }
         sort();
     } else if (pid > 0) { // parents
