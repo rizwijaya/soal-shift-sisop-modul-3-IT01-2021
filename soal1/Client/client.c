@@ -54,7 +54,6 @@ void *user_cetak(void *arg)
 { //Cetak input user
   if (strcmp(user_data.mode, "recvstrings") == 0)
   {
-    ;
     int sock = *(int *)arg;
     char buffer[1024] = {0};
     while (1)
