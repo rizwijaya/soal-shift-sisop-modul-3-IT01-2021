@@ -10,7 +10,7 @@ int pid, pid_2, status, waiting;
 int fd[2];  // Store pipe 1
 int fd2[2]; // Store pipe 2
 
-void closepipes() {// Fungsi untuk menutup 2 pipes
+void closepipes() { // Fungsi untuk menutup 2 pipes
     close(fd[0]);
     close(fd[1]);
     close(fd2[0]);
@@ -37,8 +37,8 @@ void sort() {
 }
 
 void psaux() {
-    dup2(fd[1], 1);//replace ouput dengan output pipes
-    closepipes(); //Tutup pipes
+    dup2(fd[1], 1); //replace ouput dengan output pipes
+    closepipes();   //Tutup pipes
     //Eksekusi command ps
     execlp("/bin/ps", "ps", "aux", NULL);
     perror("exec"); //Jika terjadi error
@@ -50,24 +50,24 @@ int main(int argc, char **argv) {
     pipe(fd);
     pipe(fd2);
 
-    if (pipe(fd) == -1) { 
-	fprintf(stderr, "Pipe Failed" ); 
-	return 1; 
-    } 
-    if (pipe(fd2) == -1) { 
-	fprintf(stderr, "Pipe Failed" ); 
-	return 1; 
-    } 
+    if (pipe(fd) == -1) {
+        fprintf(stderr, "Pipe Failed");
+        return 1;
+    }
+    if (pipe(fd2) == -1) {
+        fprintf(stderr, "Pipe Failed");
+        return 1;
+    }
     pid = fork(); //fork child pertama
-    if (pid < 0) { 
-		fprintf(stderr, "fork Failed" ); 
-		return 1; 
-	} else if (pid == 0) {
+    if (pid < 0) {
+        fprintf(stderr, "fork Failed");
+        return 1;
+    } else if (pid == 0) {
         pid_2 = fork(); // fork child's child
-        if (pid_2 < 0) { 
-		fprintf(stderr, "fork Failed" ); 
-		return 1; 
-	    } else if (pid_2 == 0) {
+        if (pid_2 < 0) {
+            fprintf(stderr, "fork Failed");
+            return 1;
+        } else if (pid_2 == 0) {
             head(fd, fd2);
         }
         sort();
