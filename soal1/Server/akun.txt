@@ -1,5 +1,0 @@
-riz:123
-admin:123
-test:testing123
-ade:123
-test:testing
