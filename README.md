@@ -42,17 +42,17 @@ Output Client Console:
 dari aplikasi client akan dimasukan data buku tersebut (perlu diingat bahwa Filepath ini merupakan path file yang akan dikirim ke server). Lalu client nanti akan melakukan pengiriman file ke aplikasi server dengan menggunakan socket. Ketika file diterima di server, maka row dari files.tsv akan bertambah sesuai dengan data terbaru yang ditambahkan.
 
 
-d.	Dan client dapat mendownload file yang telah ada dalam folder FILES di server, sehingga sistem harus dapat mengirim file ke client. Server harus melihat dari files.tsv untuk melakukan pengecekan apakah file tersebut valid. Jika tidak valid, maka mengirimkan pesan error balik ke client. Jika berhasil, file akan dikirim dan akan diterima ke client di folder client tersebut. 
+d.Dan client dapat mendownload file yang telah ada dalam folder FILES di server, sehingga sistem harus dapat mengirim file ke client. Server harus melihat dari files.tsv untuk melakukan pengecekan apakah file tersebut valid. Jika tidak valid, maka mengirimkan pesan error balik ke client. Jika berhasil, file akan dikirim dan akan diterima ke client di folder client tersebut. 
 
 Contoh Command client
 >download TEMPfile.pdf
 
-e.	Setelah itu, client juga dapat menghapus file yang tersimpan di server. Akan tetapi, Keverk takut file yang dibuang adalah file yang penting, maka file hanya akan diganti namanya menjadi ‘old-NamaFile.ekstensi’. Ketika file telah diubah namanya, maka row dari file tersebut di file.tsv akan terhapus.
+e.Setelah itu, client juga dapat menghapus file yang tersimpan di server. Akan tetapi, Keverk takut file yang dibuang adalah file yang penting, maka file hanya akan diganti namanya menjadi ‘old-NamaFile.ekstensi’. Ketika file telah diubah namanya, maka row dari file tersebut di file.tsv akan terhapus.
 
 Contoh Command Client:
 >delete TEMPfile.pdf
 
-f.	Client dapat melihat semua isi files.tsv dengan memanggil suatu perintah yang bernama see. Output dari perintah tersebut keluar dengan format. 
+f.Client dapat melihat semua isi files.tsv dengan memanggil suatu perintah yang bernama see. Output dari perintah tersebut keluar dengan format. 
 
 
 Contoh Command Client :
@@ -303,7 +303,7 @@ int receive_file(int socket, char *fname)
 ```
 
 - ```int receive_file``` fungsi untuk menerima file 
-- file masuk akan dibuka dengan perintah write byte lalu jika file tidak ada maka akan menampilakan File, Tidak dapat dibuat di client. Dimana ukuran file sudah didefinisikan jika tidak sesuai maka akan menampilkan gagal menulis file dan dilakukan pengecekan jika ukuran file sudah sesuai maka file akan didownload dari server apabila sudah didownload akan menampilkan file berhasil didownloads dan file akan ditutup.
+- file masuk akan dibuka dengan perintah write byte lalu jika file tidak ada maka akan menampilkan File, Tidak dapat dibuat di client. Dimana ukuran file sudah didefinisikan jika tidak sesuai maka akan menampilkan gagal menulis file dan dilakukan pengecekan jika ukuran file sudah sesuai maka file akan didownload dari server apabila sudah didownload akan menampilkan file berhasil didownloads dan file akan ditutup.
 
 ```
 void *user_input(void *arg)
@@ -550,7 +550,7 @@ void regist(char id[], char password[])
     fclose(fp);
 }
 ```
-- ```void regist``` fungsi untuk emlakukan register
+- ```void regist``` fungsi untuk melakukan register
 - File akun.txt akan dibuka lalu client akan menuliskan id dan password didalam file tersebut. Jika sudah maka akan mencetak id dan password
 
 ```
@@ -578,7 +578,7 @@ void catatlog(char argument[])
 ```
 - ```int addtsv``` fungsi untuk tambahkan file tsv
 - file "files.tsv akan dibuka ```a+``` terbuka untuk membaca dan menulis. jika ```fp == NULL``` maka file tidak dapat dibuka.
-- ```void catatlog```  fungsi untuk menceta log, pada running.log akan mencatat command add
+- ```void catatlog```  fungsi untuk mencetak log, pada running.log akan mencatat command add
 
 ```
 int receive_file(int socket, char *fname)
@@ -643,7 +643,7 @@ int receive_file(int socket, char *fname)
 }
 ```
 
-- ```receive_file``` fungsi untuk menerima file. Server akan menerima file, ukuran file, dan isi dari file tersebut. Dimana akan dilakukan pengecekan jika file gagal ditulis maka akan error ggal menulis file pada server. Jika errno == EAGAIN ```EAGAIN``` yang berarti tidak ada data yang tersedia maka akan menampilkan waktu habis. Apabila berhasil maka akan server akan menerima file dan menampilkan menerima file dari client dan file ditutup.
+- ```receive_file``` fungsi untuk menerima file. Server akan menerima file, ukuran file, dan isi dari file tersebut. Dimana akan dilakukan pengecekan jika file gagal ditulis maka akan error menampilkan "gagal menulis file pada server". Jika errno == EAGAIN ```EAGAIN``` yang berarti tidak ada data yang tersedia maka akan menampilkan waktu habis. Apabila berhasil maka akan server akan menerima file dan menampilkan menerima file dari client dan file ditutup.
 - output akan ditampilkan ke client berupa Nama, Publisher, Tahun publishing, Ekstensi File, Filepath.
 
 ```
@@ -692,8 +692,8 @@ int send_file(int socket, char *fname)
     return 0;
 }
 ```
-- ```int fileExist``` fungsi untuk mengecek apakah dile ada pada server.
-- ```int send_file``` fungsi untuk mengirim file. File akan dibuka ```r``` yang artinya buka file teks untuk membaca. Jika ```file == NULL``` maka akan menampilkan fiel tidak ada.
+- ```int fileExist``` fungsi untuk mengecek apakah file ada pada server.
+- ```int send_file``` fungsi untuk mengirim file. File akan dibuka ```r``` yang artinya buka file teks untuk membaca. Jika ```file == NULL``` maka akan menampilkan file tidak ada.
 - menginisiasi variabel buffer dengan fungsi bzero(). Variabel buffer akan mengambil data dari socket dengan fungsi fread. Selanjutnya akan dilakukan pengecekan fungsi send akan mengirimkan file melalui socket. Jika tidak sesuai maka gagal mengirimkan file.
 
 ```
@@ -728,7 +728,7 @@ void download(int accept_sockfd, char *fname)
 ```
 
 - ```void download``` fungsi untuk mendownload files
-- jika file sudah diserver maka akan mengirimkan pesan ke server dan clienr dan jika file sudah dikirimkan ke client maka akan menampilkan file berhaisl dikirimkan jika tidak maka akan menampilkan file gagal dikirimkan
+- jika file sudah diserver maka akan mengirimkan pesan ke server dan client dan jika file sudah dikirimkan ke client maka akan menampilkan file berhasil dikirimkan jika tidak maka akan menampilkan file gagal dikirimkan
 - Apabila file tidak terdapat diserver maka akan menampilkan file tidak ada diserver
 
 ```
@@ -1143,3 +1143,215 @@ int main()
 - fungsi accept ini menerima dari antrian koneksi yang masuk pada server, membuat file descriptor baru sebagai media komunikasi yang akan digunakan pada pertukaran data nantinya dan merujuk pada socket yang telah dibuat sebelumnya. Parameter pertama yang digunakan adalah integer hasil dari pembuatan fungsi socket sebelumnya. Parameter kedua adalah adalah pointer ke struct sockaddr. Pointer ini berisi informasi mengenai peer yang terkoneksi dengan server. Parameter ketiga berisi ukuran dari pointer sockaddr yang menampung informasi client, nilai ini harus berbentuk pointer structure dari ukuran struct addr. Apabila client sudah terhubung dengan server maka akan menampilkan "Terhubung dengan klien yang beralamat:".
 
 ### Screenshot Output
+
+## Soal Nomor 2
+
+Crypto adalah orang yang sangat menyukai tantangan, dia ingin membantu Loba mengerjakan tugasnya. Detil dari tugas tersebut adalah:
+
+a.	Membuat program perkalian matrix (4x3 dengan 3x6) dan menampilkan hasilnya. Matriks nantinya akan berisi angka 1-20 (tidak perlu dibuat filter angka).
+
+b.	Membuat program dengan menggunakan matriks output dari program sebelumnya (program soal2a.c). Kemudian matriks tersebut akan dilakukan perhitungan dengan matrix baru (input user) sebagai berikut contoh perhitungan untuk matriks yang ada. Perhitungannya adalah setiap cel yang berasal dari matriks A menjadi angka untuk faktorial, lalu cel dari matriks B menjadi batas maksimal faktorialnya. 
+
+Catatan :
+- gunakan shared memory
+
+- gunakan thread untuk perhitungan di setiap cel
+
+>If a >= b  -> a!/(a-b)!
+>
+>If b > a -> a!
+>
+>If 0 -> 0
+
+c.Karena takut lag dalam pengerjaannya membantu Loba, Crypto juga membuat program (soal2c.c) untuk mengecek 5 proses teratas apa saja yang memakan resource komputernya dengan command “ps aux | sort -nrk 3,3 | head -5”
+
+Catatan :
+- Harus menggunakan IPC Pipes
+
+#### Note :
+-	Semua matriks berasal dari input ke program.
+
+-	Dilarang menggunakan system()
+
+### Penjelasan Program :
+
+Source Code [Soal 2a](https://github.com/rizwijaya/soal-shift-sisop-modul-3-IT01-2021/blob/main/soal2/soal2a.c)
+
+Source Code [Soal 2b](https://github.com/rizwijaya/soal-shift-sisop-modul-3-IT01-2021/blob/main/soal2/soal2b.c)
+
+Source Code [Soal 2c](https://github.com/rizwijaya/soal-shift-sisop-modul-3-IT01-2021/blob/main/soal2/soal2c.c)
+
+### No. 2a
+---
+#### Library
+Berikut adalah library yang digunakan untuk menyelesaikan soal ini:
+
+```#include <stdio.h>``` = untuk standard input-output
+
+```#include <unistd.h>``` = untuk melakukan system call ```fork()```
+
+```#include <sys/shm.h>``` = untuk menggunakan system call shared memory pada linux (e.g. shmat(), shmget())
+
+```#include <sys/ipc.h>``` =untuk menggunakan system call IPC pada linux
+
+```
+#define M 4
+#define N 3
+#define O 6
+
+int main()
+{
+        int A[M][N];
+        int B[N][O];
+        int *res;
+        int temp_matrix[M][O];
+
+        key_t key = 1234;
+        int shmid = shmget(key, sizeof(res), IPC_CREAT | 0666);
+        res = shmat(shmid, 0, 0);
+        
+```
+- konstanta M juga berisi nilai 4. N berisi nilai 3 dan N berisi nilai 6
+- Lalu didefinisikan dimana A(matriks 4x3), B(matriks 3x6) 
+- Disini dilakukan deklarasi untuk key, res, dan shmid. Membuat shared memory untuk res dengan cara pembuatan shared memory dari modul, karena hasil dari output soal 2a akan digunakan untuk kelanjutan di soal 2b. 
+
+```
+printf("Input elemen matriks pertama (4 x 3):\n");
+        //input elemen matriks pertama
+        for (int i = 0; i < M; i++){
+            for(int j = 0; j < N; j++){
+                scanf("%d", &A[i][j]);
+            }
+        }
+        
+        printf("Input elemen matriks kedua (3 x 6):\n");
+        //input elemen matriks kedua
+        for (int i=0; i < N; i++){
+            for(int j=0; j < O; j++){
+                scanf("%d", &B[i][j]);
+            }
+        }
+
+        // perkalian
+        for (int i = 0; i < M; i++){ 
+            for(int j = 0; j < O; j++){ 
+                temp_matrix[i][j] = 0;
+                for (int k = 0; k < N; k++){ 
+                    temp_matrix[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+        
+```
+- Lalu akan menampilkan " Input elemen matriks pertama (4 x 3):" yang akan mencetak matrik A dan "Input elemen matriks kedua (3 x 6):" yang akan mencetak matrik B, matriks yang diinputkan disini melakukan for loop. Dan dilakukan untuk perhitungan perkalian.
+
+```
+//tes print
+        int iter = 0;
+        for (int i = 0; i < M; ++i){
+            for(int j = 0; j < O; ++j){
+                printf("%d ", temp_matrix[i][j]);
+                res[iter] = temp_matrix[i][j]; //store in a 1d array
+                iter++;
+            }
+            printf("\n");
+        }
+```
+- Akan menampilkan hasil dari perkalian dan simpan dalam array 1d
+
+### No. 2b
+---
+
+```
+struct arg_struct
+{
+    int arg1; // matrix from shared mem
+    int arg2; // destination matrix
+    int x; // index
+    int y; // index
+};
+```
+- input berasal dari shared memory yang telah dibuat sebelumnya.
+- Membuat struct dengan nama arg_struct  dan mendefinisikan struct dengan arg 1 sebagai matrik dari share memory, arg2 sebagai matriks tujuan, x dan y sebagai index.
+
+```
+long long resultMatrix[M][O];
+
+long long factorial(int n)
+{
+    if (n == 0)
+        return 1;
+    return n * factorial(n - 1);
+}
+
+void *prerequisite(void *arguments){
+    pthread_t id=pthread_self();
+    struct arg_struct *args = (struct arg_struct*)arguments;
+    int a = (*args).arg1, b = (*args).arg2, i = (*args).x, j = (*args).y;
+
+    // resultMatrix[i][j] = factorial(a);
+    // printf ("matriks A %d, %d: %lld\n", i, j, resultMatrix[i][j]);
+    if (a == 0 || b == 0){
+        resultMatrix[i][j] = 0;
+    }
+    else if (a >= b){
+        resultMatrix[i][j] = factorial(a)/factorial(a-b);
+    }
+    else if (a < b){
+        resultMatrix[i][j] = factorial(a);
+    }
+    // free (arguments);
+    return NULL;
+}
+```
+- Untuk factorial menggunakan ```long long factorial``` thread akan menjalankan fungsi prerequisite dengan atribut sebagai variabel yang digunakan. Lalu aku menampilkan matrik faktorial dari faktorial a yang sudah didefinisikan.
+
+```
+pthread_t tid[24];
+    struct arg_struct *args;
+    int iter = 0; // for iterating through shared memory
+    for (int i = 0; i < M; i++){
+        for(int j = 0; j < O; j++){
+            args = malloc(sizeof(struct arg_struct));
+            (*args).arg1 = res[iter];
+            (*args).arg2 = A[i][j];
+            (*args).x = i;
+            (*args).y = j;
+            pthread_create(&(tid[i]), NULL, &prerequisite, (void*) args);
+            iter++;
+        }
+    }
+    for (int i = 0; i < M; i++){
+        for(int j = 0; j < O; j++){
+            pthread_join(tid[i],NULL);
+        }
+    }
+
+    sleep (1); // tunggu selesai kalkulasi
+    // print matriks hasil faktorial
+    for (int i = 0; i < M; i++){
+        for(int j = 0; j < O; j++){
+            printf("%lld ", resultMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    shmdt(res);
+    shmctl(shmid, IPC_RMID, NULL);
+    return 0;
+```
+- Disini ```thread``` akan dibuat dengan *pthread_create(&tid[i][j], NULL, &prerequisite, (void )args) dan berjalan dengan tid i dan j yang di increment setiap perulangannya. lalu akan join pada setiap thread yang sudah dibuat dengan pthread_join(tid[i][j], NULL). Dan akan menampilkan hasil matriks factorial. Lalu Melakukan pelepasan shared memory dengan shmdt dan shmctl.
+
+### No. 2c
+---
+
+```
+
+
+
+
+
+
+
+
+
