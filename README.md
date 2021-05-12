@@ -1346,6 +1346,290 @@ pthread_t tid[24];
 ---
 
 ```
+int pid, pid_2, status, waiting;
+int fd[2];  // Store pipe 1
+int fd2[2]; // Store pipe 2
+
+void closepipes() { // Fungsi untuk menutup 2 pipes
+    close(fd[0]);
+    close(fd[1]);
+    close(fd2[0]);
+    close(fd2[1]);
+}
+```
+- menset pid untuk thread dengan pid, pid_2 dan satu file descriptor yaitu fd[2] fd2[2] 
+
+```
+if (pipe(fd) == -1) {
+        fprintf(stderr, "Pipe Failed");
+        return 1;
+    }
+    if (pipe(fd2) == -1) {
+        fprintf(stderr, "Pipe Failed");
+        return 1;
+    }
+```
+- Lalu dilakukan pengecekan apakah pipe bernilai -1, jika bernilai -1 maka pembuatan pipe gagal. Dan menampilkan "pipe failed"
+
+```
+ pid = fork(); //fork child pertama
+    if (pid < 0) {
+        fprintf(stderr, "fork Failed");
+        return 1;
+    } else if (pid == 0) {
+        pid_2 = fork(); // fork child's child
+        if (pid_2 < 0) {
+            fprintf(stderr, "fork Failed");
+            return 1;
+        } else if (pid_2 == 0) {
+            head();
+        }
+        sort();
+    } else if (pid > 0) { // parents
+        psaux();
+        while ((waiting = wait(&status)) > 0) {
+            printf("Child has completed.\n");
+        }
+    }
+    return 0;
+ ```
+ - Melalukan forking dengan pengecekan pada pid. Jika ```pid < 0``` maka fork gagal dan menampilkan "fork failde". lalu masuk ke else if ```pid == 0``` melakukan pengecekan dan memanggil fungsi ```sort()```. Apabila ```pid > 0``` maka akan menjalankan fungsi ```psaux()``` proses berhasil akan menampilkan "Child has completed".
+
+```
+void closepipes() { 
+    close(fd[0]);
+    close(fd[1]);
+    close(fd2[0]);
+    close(fd2[1]);
+}
+
+void head() {
+    dup2(fd2[0], 0);
+    closepipes(); //Tutup pipes
+    // eksekusi command head
+    execlp("/usr/bin/head", "head", "-5", NULL);
+    perror("exec"); //Jika terjadi error
+    exit(0);
+}
+
+void sort() {
+    dup2(fd[0], 0);
+    dup2(fd2[1], 1);
+    closepipes(); //Tutup pipes
+    //Eksekusi command sort
+    execlp("/usr/bin/sort", "sort", "-nrk", "3,3", NULL);
+    perror("exec"); //Jika terjadi error
+    exit(0);
+}
+
+void psaux() {
+    dup2(fd[1], 1); //replace ouput dengan output pipes
+    closepipes();   //Tutup pipes
+    //Eksekusi command ps
+    execlp("/bin/ps", "ps", "aux", NULL);
+    perror("exec"); //Jika terjadi error
+    exit(0);
+}
+```
+- Membuat fungsi ```closepipes()``` untuk menutup 2 pipes
+- Membuat fungsi ```head()``` untuk mengeksekusi command head 
+- Membuat fungsi ```sort()``` untuk mengeksekusi command sort
+- Membuat fungsi ```psaux()``` untuk mengeksekusi command ps
+
+## Soal Nomor 3
+Ayub menyarankan untuk membuat sebuah program C agar file-file dapat dikategorikan. Program ini akan memindahkan file sesuai ekstensinya ke dalam folder sesuai ekstensinya yang folder hasilnya terdapat di working directory ketika program kategori tersebut dijalankan.
+
+Contoh apabila program dijalankan:
+
+> Program soal3 terletak di /home/izone/soal3
+>
+> $ ./soal3 -f path/to/file1.jpg path/to/file2.c path/to/file3.zip
+>
+> Hasilnya adalah sebagai berikut
+>
+> /home/izone
+>
+>   |-jpg
+>
+>       |--file1.jpg
+>
+>   |-c
+>
+>       |--file2.c
+>
+>   |-zip
+>
+>       |--file3.zip
+
+a. Program menerima opsi -f seperti contoh di atas, pengguna bisa menambahkan argumen file yang bisa dikategorikan sebanyak yang diinginkan oleh pengguna. 
+
+output :
+>File 1 : Berhasil Dikategorikan (jika berhasil)
+>
+>File 2 : Sad, gagal :( (jika gagal)
+>
+>File 3 : Berhasil Dikategorikan
+>
+
+b. Program juga dapat menerima opsi -d untuk melakukan pengkategorian pada suatu directory. Namun pada opsi -d ini, user hanya bisa memasukkan input 1 directory saja, tidak seperti file yang bebas menginput file sebanyak mungkin. Contohnya adalah seperti ini:
+>$ ./soal3 -d /path/to/directory/
+
+Perintah di atas akan mengkategorikan file di /path/to/directory, lalu hasilnya akan disimpan di working directory dimana program C tersebut berjalan (hasil kategori filenya bukan di /path/to/directory).
+Output yang dikeluarkan adalah seperti ini :
+>Jika berhasil, print “Direktori sukses disimpan!”
+>
+>Jika gagal, print “Yah, gagal disimpan :(“
+
+c. Selain menerima opsi-opsi di atas, program ini menerima opsi *, contohnya ada di bawah ini:
+>$ ./soal3 \*
+
+d. Semua file harus berada di dalam folder, jika terdapat file yang tidak memiliki ekstensi, file disimpan dalam folder “Unknown”. Jika file hidden, masuk folder “Hidden”.
+
+e. Setiap 1 file yang dikategorikan dioperasikan oleh 1 thread agar bisa berjalan secara paralel sehingga proses kategori bisa berjalan lebih cepat.
+
+#### Catatan :
+- Kategori folder tidak dibuat secara manual, harus melalui program C
+- Program ini tidak case sensitive. Contoh: JPG dan jpg adalah sama
+- Jika ekstensi lebih dari satu (contoh “.tar.gz”) maka akan masuk ke folder dengan titik terdepan (contoh “tar.gz”)
+- Dilarang juga menggunakan fork-exec dan system()
+- Bagian b dan c berlaku rekursif
+
+### Penjelasan Program :
+Source Code [soal 3 ](https://github.com/rizwijaya/soal-shift-sisop-modul-3-IT01-2021/blob/main/soal3/soal3.c)
+
+#### Library
+Berikut adalah library yang digunakan untuk menyelesaikan soal ini:
+
+```#include <stdio.h>``` = untuk standard input-output
+
+```#include <stdlib.h>``` = untuk fungsi umum
+
+```#include <sys/types.h>``` = untuk tipe data pid_t
+
+```#include <string.h>``` = untuk melakukan manipulasi string, misalnya ```strcmp()```
+
+```#include <unistd.h>``` = untuk melakukan system call ```fork()```
+
+```#include <pthread.h>``` = untuk bisa menjalankan file c
+
+```#include <dirent.h>``` = untuk operasi akses direktori
+
+```#include <ctype.h>``` = untuk mendeklarasikan serangkaian fungsi dan mengklasifikasikan karakter
+
+```#include <string.h>``` = untuk melakukan manipulasi string, misalnya ```strcmp()```
+
+```#include <libgen.h>``` = untuk menyatakan variabel eksternal
+
+
+
+```
+ if (strcmp(argv[1], "-f") == 0 && argc > 2)
+    {
+        pthread_t tid[argc-2]; //inisialisasi array untuk menampung thread dalam kasus ini ada argc-2 thread
+        // loop every argc
+        for (int i = 2; i < argc; i++)
+        {
+            err = pthread_create(&tid[j], NULL, &move, argv[i]);
+            if(err!=0) //cek error
+            {
+                printf("%s : Sad, gagal :(\n",get_filename((char*)argv[i]));
+            }
+            else
+            {
+                printf("%s : Berhasil Dikategorikan\n",get_filename((char*)argv[i]));
+            }
+            j++;
+        }
+        for (int j = 0; j < argc - 2; j++){
+            pthread_join(tid[j], NULL);
+        }
+    }
+    
+ ```   
+- Dilakukan pengecekan apakah argv berupa "-f". Dan melakukan loop untuk mengecek error apabila berhasil maka akan menampilkan output sesuai ketentuan soal "Berhasil dikategorikan" , "sad gagal".
+
+
+```
+else if ((strcmp(argv[1], "-d") == 0 && argv[2] != NULL) || (strcmp(argv[1], "*") == 0 && argc == 2))
+    {
+        // do something
+        DIR *dir;
+        struct dirent *ent;
+        char cwd[PATH_MAX];
+        if (strcmp(argv[1], "-d") == 0 ){
+            if ((dir = opendir(argv[2])) == NULL)
+            {
+                printf("Can't open %s\n", (char *)argv[2]);
+                return 0;
+            }
+        }
+        else {
+            dir = opendir (getcwd(cwd, sizeof(cwd)));
+        }
+
+        while ((ent = readdir (dir)) != NULL) 
+        {
+            // normal file
+            if (ent->d_type == DT_REG){
+                err = pthread_create(&tid[j], NULL, &move, ent->d_name);
+            }
+            else if (ent->d_type == DT_DIR){
+                // kalau folder, 
+                char path[1024];
+                if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
+                continue;
+
+                if (args[2] != NULL && (strcmp(args[1], "-d") == 0)) {
+                    snprintf(path, sizeof(path), "%s/%s", args[2], ent->d_name);
+                }
+                else if (strcmp(args[1], "*") == 0) {
+                    snprintf(path, sizeof(path), "%s/%s", getcwd(cwd, sizeof(cwd)), ent->d_name);
+                }
+
+                moveDir(path);
+            }
+            j++;
+        }
+ ```
+ - Pada else if dilakukan pengecekan apakah argv berupa "-d" untuk melakukan pengkategorian ditektori. Nantinya direktori akan dibuka dan dibaca dan hasilnya akan disimpan di working directory. Dan fungsi ```movedir()``` akan dipanggil
+
+```
+char *get_filename_ext(const char *filename) {
+    const char *dot;
+    const char needle[10] = ".tar.gz";
+    if (strstr(filename, needle) != NULL){
+        dot = strstr(filename, needle);
+    }else{
+        dot = strrchr(filename, '.');
+    }
+
+    if(filename[0] == '.') return "Hidden";
+    if(!dot || dot == filename) return "Unknown";
+    
+    char *lowered = dot;
+    for (int i = 0; lowered[i]; i++)
+    {
+        lowered[i] = tolower(lowered[i]);
+        /* code */
+    }
+    
+    return lowered + 1;
+}
+```
+- Dimana file harus berada di dalam folder, jika terdapat file yang tidak memiliki ekstensi, file disimpan dalam folder “Unknown” ```return unknown```. Jika file hidden, masuk folder “Hidden” ```return hidden```. Jika ekstensi lebih dari satu ```.tar.gz```.
+
+### Screenshot Output
+
+
+        
+
+
+
+
+
+
+
+
 
 
 
