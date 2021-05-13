@@ -1144,6 +1144,11 @@ int main()
 
 ### Screenshot Output
 
+![s3](https://user-images.githubusercontent.com/73151978/118141466-991bcd80-b433-11eb-99e6-7fc9f1f99cb8.PNG)
+![s1](https://user-images.githubusercontent.com/73151978/118141475-9a4cfa80-b433-11eb-9496-cb87c6849567.PNG)
+![s2](https://user-images.githubusercontent.com/73151978/118141480-9ae59100-b433-11eb-9dde-0cbafb77eaf5.PNG)
+
+
 ## Soal Nomor 2
 
 Crypto adalah orang yang sangat menyukai tantangan, dia ingin membantu Loba mengerjakan tugasnya. Detil dari tugas tersebut adalah:
@@ -1436,6 +1441,12 @@ void psaux() {
 - Membuat fungsi ```sort()``` untuk mengeksekusi command sort
 - Membuat fungsi ```psaux()``` untuk mengeksekusi command ps
 
+### Screenshot Output
+
+![2c](https://user-images.githubusercontent.com/73151978/118141615-c0729a80-b433-11eb-997e-46fc10bcea59.PNG)
+![2a](https://user-images.githubusercontent.com/73151978/118141626-c1a3c780-b433-11eb-8343-c187f007e41b.PNG)
+![2b](https://user-images.githubusercontent.com/73151978/118141627-c23c5e00-b433-11eb-82ce-5e7cbbd54053.PNG)
+
 ## Soal Nomor 3
 Ayub menyarankan untuk membuat sebuah program C agar file-file dapat dikategorikan. Program ini akan memindahkan file sesuai ekstensinya ke dalam folder sesuai ekstensinya yang folder hasilnya terdapat di working directory ketika program kategori tersebut dijalankan.
 
@@ -1620,7 +1631,10 @@ char *get_filename_ext(const char *filename) {
 
 ### Screenshot Output
 
-
+![3](https://user-images.githubusercontent.com/73151978/118141806-f9127400-b433-11eb-8faf-28aa84ab55bf.PNG)
+![3 1](https://user-images.githubusercontent.com/73151978/118141818-fc0d6480-b433-11eb-8718-17a7999a6d2d.PNG)
+![3 2](https://user-images.githubusercontent.com/73151978/118141822-fd3e9180-b433-11eb-8032-a5bf0d7cd9b0.PNG)
+![3 3](https://user-images.githubusercontent.com/73151978/118141825-fe6fbe80-b433-11eb-851c-dcaf42d7ec41.PNG)
         
 
 
